@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Sale Agreement Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .form-container {
+            margin-bottom: 40px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .template-preview {
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 30px 0;
+        }
+        .document-container {
+            line-height: 1.8;
+            padding: 30px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .document-container h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Property Sale Agreement Generator</h1>
+        
+        <div class="form-container no-print">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="fatherName">Father's Name</label>
+                <input type="text" id="fatherName" placeholder="Enter your father's name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="propertySize">Property Size (sq.ft.)</label>
+                <input type="number" id="propertySize" placeholder="Enter property size in square feet" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="saleAmount">Sale Amount (₹)</label>
+                <input type="number" id="saleAmount" placeholder="Enter sale amount in rupees" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" required>
+            </div>
+            
+            <button id="generateBtn">Generate Agreement Document</button>
+        </div>
+        
+        <div id="documentContainer" class="document-container" style="display: none;">
+            <h2>PROPERTY SALE AGREEMENT</h2>
+            <div id="templateContent"></div>
+            <div class="no-print" style="margin-top: 20px; text-align: center;">
+                <button id="downloadBtn" style="width: auto; padding: 10px 30px;">Download PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const templateContent = document.getElementById('templateContent');
+            const documentContainer = document.getElementById('documentContainer');
+            
+            generateBtn.addEventListener('click', function() {
+                // Get form values
+                const fullName = document.getElementById('fullName').value;
+                const fatherName = document.getElementById('fatherName').value;
+                const propertySize = document.getElementById('propertySize').value;
+                const saleAmount = document.getElementById('saleAmount').value;
+                const selectedDate = document.getElementById('date').value;
+                
+                // Format date
+                const date = new Date(selectedDate);
+                const formattedDate = date.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                
+                // Create template with placeholders filled
+                templateContent.innerHTML = `
+                    <p>This Sale Deed is made on <strong>${formattedDate}</strong> between <strong>${fullName}</strong>, 
+                    S/o <strong>${fatherName}</strong>, residing at _______________, hereinafter referred to as the 
+                    "SELLER" (which expression shall, unless repugnant to the context or meaning thereof, be deemed 
+                    to include his legal heirs, successors, executors, administrators, legal representatives and assigns) 
+                    of the ONE PART.</p>
+                    
+                    <p>AND</p>
+                    
+                    <p>_________________________, S/o _________________________, residing at _____________________, 
+                    hereinafter referred to as the "PURCHASER" (which expression shall, unless repugnant to the context 
+                    or meaning thereof, be deemed to include his legal heirs, successors, executors, administrators, 
+                    legal representatives and assigns) of the OTHER PART.</p>
+                    
+                    <h3>PROPERTY DETAILS</h3>
+                    
+                    <p>The SELLER hereby agrees to sell and the PURCHASER hereby agrees to purchase ALL THAT piece and 
+                    parcel of land admeasuring about <strong>${propertySize}</strong> sq.ft., together with building 
+                    thereon, situated at _____________________, more particularly described in the Schedule hereunder 
+                    written, hereinafter referred to as the "SAID PROPERTY".</p>
+                    
+                    <h3>CONSIDERATION</h3>
+                    
+                    <p>The PURCHASER hereby agrees to pay to the SELLER a total consideration of <strong>₹${saleAmount}</strong> 
+                    (Rupees _________________________________________) only, for the SAID PROPERTY, which the SELLER 
+                    hereby acknowledges to have received to his entire satisfaction from the PURCHASER by way of cash/
+                    demand draft/bank transfer on _______________.</p>
+                    
+                    <h3>SCHEDULE OF PROPERTY</h3>
+                    
+                    <p>The SAID PROPERTY is more particularly described as follows:</p>
+                    
+                    <p>_______________________________________________________________________________</p>
+                    <p>_______________________________________________________________________________</p>
+                    <p>_______________________________________________________________________________</p>
+                    
+                    <div style="margin-top: 50px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="width: 45%;">
+                                <p>_________________________</p>
+                                <p><strong>SELLER</strong></p>
+                            </div>
+                            <div style="width: 45%;">
+                                <p>_________________________</p>
+                                <p><strong>PURCHASER</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <p>WITNESSES:</p>
+                        <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+                            <div style="width: 30%;">
+                                <p>1. _________________________</p>
+                            </div>
+                            <div style="width: 30%;">
+                                <p>2. _________________________</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Show document container
+                documentContainer.style.display = 'block';
+            });
+            
+            downloadBtn.addEventListener('click', function() {
+                // Generate PDF
+                const element = document.getElementById('documentContainer');
+                
+                // Clone the element to avoid modifying the original
+                const clonedElement = element.cloneNode(true);
+                
+                // Remove no-print elements from the clone
+                const noPrintElements = clonedElement.querySelectorAll('.no-print');
+                noPrintElements.forEach(el => el.remove());
+                
+                // Create a new window with the content
+                const win = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+                
+                win.document.write('<html><head><title>Sale Deed</title>');
+                win.document.write('<style>');
+                win.document.write(`
+                    body {
+                        font-family: 'Georgia', serif;
+                        line-height: 1.6;
+                        margin: 0;
+                        padding: 40px;
+                        color: #333;
+                    }
+                    h2 {
+                        text-align: center;
+                        margin-bottom: 20px;
+                        text-decoration: underline;
+                    }
+                    h3 {
+                        margin-top: 20px;
+                        text-decoration: underline;
+                    }
+                    p {
+                        margin-bottom: 10px;
+                    }
+                `);
+                win.document.write('</style></head><body>');
+                win.document.write(clonedElement.innerHTML);
+                win.document.write('</body></html>');
+                
+                win.document.close();
+                win.focus();
+                
+                setTimeout(function() {
+                    win.print();
+                    win.close();
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
